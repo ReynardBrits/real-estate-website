@@ -23,14 +23,17 @@ require_once __DIR__ . '/functions.php';
             <a href="<?= url('properties.php'); ?>">Properties</a>
             <a href="<?= url('mortgage-calculator.php'); ?>">Mortgage Calculator</a>
             <a href="<?= url('contact.php'); ?>">Contact</a>
+            
+            <?php if (isLoggedIn() && !isAgentOrAdmin()): ?>
+                <a href="<?= url('dashboard.php'); ?>">Dashboard</a>
+                <a href="<?= url('favourites.php'); ?>">Favourites</a>
+            <?php endif; ?>
+
+            <?php if (isAgentOrAdmin()): ?>
+                <a href="<?= url('admin/dashboard.php'); ?>">Admin</a>
+            <?php endif; ?>
 
             <?php if (isLoggedIn()): ?>
-                <a href="<?= url('favourites.php'); ?>">Favourites</a>
-
-                <?php if (isAgentOrAdmin()): ?>
-                    <a href="<?= url('admin/dashboard.php'); ?>">Admin</a>
-                <?php endif; ?>
-
                 <a href="<?= url('logout.php'); ?>">Logout</a>
             <?php else: ?>
                 <a href="<?= url('register.php'); ?>">Register</a>
