@@ -60,6 +60,12 @@ require_once "../includes/header.php";
             <a class="btn btn-secondary" href="<?= url('admin/enquiries.php'); ?>">
                 View Enquiries
             </a>
+
+            <?php if (isAdmin()): ?>
+               <a class="btn btn-secondary" href="<?= url('admin/users.php'); ?>">
+                  Manage Users
+               </a>
+            <?php endif; ?>
         </div>
     </div>
 </section>
