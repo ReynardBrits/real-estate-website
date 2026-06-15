@@ -103,17 +103,36 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     </div>
 </section>
 
-<section class="section">
-    <div class="container panel">
-        <h2>About Brits Realty</h2>
-        <p>
-            Brits Realty is a real estate web application where users can search for properties,
-            view property details, send enquiries and save favourite properties.
-        </p>
-        <br>
-        <p>
-            Agents and administrators can manage property listings through the admin dashboard.
-        </p>
+<section class="section about-section">
+    <div class="container">
+        <div class="about-content">
+            <div>
+                <h2 class="section-title">About Materiality</h2>
+
+                <p>
+                    At Brits Realty, we help clients find properties that match their lifestyle, 
+                    budget and long-term goals. Whether you are buying your first home, looking 
+                    for an investment property, or searching for a rental, our platform makes it 
+                    easier to explore available listings and connect with the right property professionals.
+                </p>
+
+                <a class="btn" href="<?= url('properties.php'); ?>">
+                    Browse Properties
+                </a>
+            </div>
+
+            <div class="about-card">
+                <h3>Why Choose Brits Realty?</h3>
+
+                <ul>
+                    <li>Detailed property listings with multiple images</li>
+                    <li>Easy search and filtering options</li>
+                    <li>Saved favourites for registered users</li>
+                    <li>Direct property enquiries</li>
+                    <li>Built-in mortgage repayment calculator</li>
+                </ul>
+            </div>
+        </div>
     </div>
 </section>
 

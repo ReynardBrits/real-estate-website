@@ -13,17 +13,17 @@ require_once __DIR__ . '/functions.php';
 <body>
 
 <header class="site-header">
-    <div class="container nav-wrapper">
-        <a href="<?= url('index.php'); ?>" class="logo">Brits Realty</a>
+    <div class="container header-container">
+        <a class="site-logo" href="<?= url('index.php'); ?>">
+            Brits Realty
+        </a>
 
-        <button class="menu-toggle" id="menuToggle">☰</button>
-
-        <nav class="main-nav" id="mainNav">
+        <nav class="site-nav">
             <a href="<?= url('index.php'); ?>">Home</a>
             <a href="<?= url('properties.php'); ?>">Properties</a>
             <a href="<?= url('mortgage-calculator.php'); ?>">Mortgage Calculator</a>
             <a href="<?= url('contact.php'); ?>">Contact</a>
-            
+
             <?php if (isLoggedIn() && !isAgentOrAdmin()): ?>
                 <a href="<?= url('dashboard.php'); ?>">Dashboard</a>
                 <a href="<?= url('favourites.php'); ?>">Favourites</a>
