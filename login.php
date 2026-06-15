@@ -23,7 +23,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if ($user['role'] === 'admin' || $user['role'] === 'agent') {
             redirect("admin/dashboard.php");
         } else {
-            redirect("properties.php");
+            redirect("dashboard.php");
         }
     } else {
         $error = "Invalid email or password.";
