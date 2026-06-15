@@ -21,6 +21,7 @@ require_once __DIR__ . '/functions.php';
         <nav class="main-nav" id="mainNav">
             <a href="<?= url('index.php'); ?>">Home</a>
             <a href="<?= url('properties.php'); ?>">Properties</a>
+            <a href="<?= url('mortgage-calculator.php'); ?>">Mortgage Calculator</a>
             <a href="<?= url('contact.php'); ?>">Contact</a>
 
             <?php if (isLoggedIn()): ?>

@@ -25,4 +25,8 @@ function isLoggedIn() {
 function isAgentOrAdmin() {
     return isset($_SESSION['role']) && in_array($_SESSION['role'], ['agent', 'admin']);
 }
+
+function isAdmin() {
+    return isset($_SESSION['role']) && $_SESSION['role'] === 'admin';
+}
 ?>

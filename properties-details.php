@@ -148,6 +148,13 @@ require_once "includes/header.php";
 
                     <br>
 
+                    <a 
+                       class="btn btn-secondary" 
+                       href="<?= url('mortgage-calculator.php?price=' . $property['price']); ?>"
+                    >
+                        Calculate Mortgage
+                    </a>
+
                     <?php if (isLoggedIn()): ?>
                         <form action="<?= url('save-favourites.php'); ?>" method="POST">
                             <input 
