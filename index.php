@@ -107,7 +107,7 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <div class="container">
         <div class="about-content">
             <div>
-                <h2 class="section-title">About Materiality</h2>
+                <h2 class="section-title">About Brits Realty</h2>
 
                 <p>
                     At Brits Realty, we help clients find properties that match their lifestyle, 

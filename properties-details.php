@@ -149,8 +149,8 @@ require_once "includes/header.php";
                     <br>
 
                     <a 
-                       class="btn btn-secondary" 
-                       href="<?= url('mortgage-calculator.php?price=' . $property['price']); ?>"
+                        class="btn btn-secondary" 
+                        href="<?= url('mortgage-calculator.php?price=' . $property['price']); ?>"
                     >
                         Calculate Mortgage
                     </a>
