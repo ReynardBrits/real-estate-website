@@ -18,7 +18,17 @@ require_once __DIR__ . '/functions.php';
             Brits Realty
         </a>
 
-        <nav class="site-nav">
+        <button 
+            type="button"
+            class="menu-toggle" 
+            id="menuToggle" 
+            aria-label="Open navigation menu"
+            onclick="document.getElementById('siteNav').classList.toggle('show')"
+        >
+            ☰
+        </button>
+
+        <nav class="site-nav" id="siteNav">
             <a href="<?= url('index.php'); ?>">Home</a>
             <a href="<?= url('properties.php'); ?>">Properties</a>
             <a href="<?= url('mortgage-calculator.php'); ?>">Mortgage Calculator</a>

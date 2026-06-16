@@ -115,4 +115,5 @@ function formatCurrency(amount) {
         maximumFractionDigits: 2
     });
 }
+
 });
