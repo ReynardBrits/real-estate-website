@@ -117,3 +117,21 @@ function formatCurrency(amount) {
 }
 
 });
+
+const compareForm = document.getElementById("compareForm");
+
+if (compareForm) {
+    compareForm.addEventListener("submit", function (event) {
+        const selectedProperties = compareForm.querySelectorAll("input[name='ids[]']:checked");
+
+        if (selectedProperties.length < 2) {
+            event.preventDefault();
+            alert("Please select at least two properties to compare.");
+        }
+
+        if (selectedProperties.length > 4) {
+            event.preventDefault();
+            alert("Please select a maximum of four properties to compare.");
+        }
+    });
+}

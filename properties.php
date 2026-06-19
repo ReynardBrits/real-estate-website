@@ -139,57 +139,76 @@ $locationSuggestions = $suggestionStmt->fetchAll(PDO::FETCH_COLUMN);
             <input type="text" id="liveSearch" placeholder="Search visible results...">
         </div>
 
-        <?php if (count($properties) > 0): ?>
-            <div class="property-grid">
-                <?php foreach ($properties as $property): ?>
-                    <article class="property-card">
-                        <img 
-                            src="<?= url($property['image_url']); ?>" 
-                            alt="<?= e($property['title']); ?>"
-                            loading="lazy"
-                        >
+        <form method="GET" action="<?= url('compare.php'); ?>" id="compareForm">
 
-                        <div class="property-card-content">
-                            <span class="badge"><?= e($property['listing_type']); ?></span>
+            <?php if (count($properties) > 0): ?>
+                <div class="property-grid">
+                    <?php foreach ($properties as $property): ?>
+                        <article class="property-card">
 
-                            <h3><?= e($property['title']); ?></h3>
-
-                            <p><?= e($property['location']); ?></p>
-
-                            <p class="price">
-                                R<?= number_format($property['price'], 2); ?>
-                            </p>
-
-                            <p>
-                                <?= e($property['bedrooms']); ?> Beds |
-                                <?= e($property['bathrooms']); ?> Baths |
-                                <?= e($property['garages']); ?> Garages
-                            </p>
-
-                            <p>
-                                <?= e($property['floor_size']); ?> m² floor
-                                <?php if (!empty($property['erf_size'])): ?>
-                                    | <?= e($property['erf_size']); ?> m² erf
-                                <?php endif; ?>
-                            </p>
-
-                            <br>
-
-                            <a 
-                                class="btn btn-secondary" 
-                                href="<?= url('properties-details.php?id=' . $property['property_id']); ?>"
+                            <label class="compare-option">
+                                <input 
+                                    type="checkbox" 
+                                    name="ids[]" 
+                                    value="<?= e($property['property_id']); ?>"
+                                >
+                                    Compare
+                                </label>
+                            <img 
+                                src="<?= url($property['image_url']); ?>" 
+                                alt="<?= e($property['title']); ?>"
+                                loading="lazy"
                             >
-                                View Details
-                            </a>
-                        </div>
-                    </article>
-                <?php endforeach; ?>
-            </div>
+
+                            <div class="property-card-content">
+                                <span class="badge"><?= e($property['listing_type']); ?></span>
+
+                                <h3><?= e($property['title']); ?></h3>
+
+                                <p><?= e($property['location']); ?></p>
+
+                                <p class="price">
+                                    R<?= number_format($property['price'], 2); ?>
+                                </p>
+
+                                <p>
+                                    <?= e($property['bedrooms']); ?> Beds |
+                                    <?= e($property['bathrooms']); ?> Baths |
+                                    <?= e($property['garages']); ?> Garages
+                                </p>
+
+                                <p>
+                                    <?= e($property['floor_size']); ?> m² floor
+                                    <?php if (!empty($property['erf_size'])): ?>
+                                    <?= e($property['erf_size']); ?> m² erf
+                                    <?php endif; ?>
+                                </p>
+
+                                <br>
+
+                                <a 
+                                    class="btn btn-secondary" 
+                                    href="<?= url('properties-details.php?id=' . $property['property_id']); ?>"
+                                >
+                                    View Details
+                                </a>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+
+                <br>
+                <button class="btn" type="submit">
+                    Compare Selected
+                </button>
+        </form>
+
         <?php else: ?>
             <div class="panel">
                 <p>No properties matched your search. Try changing the filters.</p>
             </div>
         <?php endif; ?>
+
     </div>
 </section>
 
