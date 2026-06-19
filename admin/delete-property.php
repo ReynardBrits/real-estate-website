@@ -28,7 +28,6 @@ if (!empty($_GET['id'])) {
         foreach ($images as $image) {
             $imagePath = $image['image_url'];
 
-            // Only delete local project images, not external URLs
             if (!empty($imagePath) && !filter_var($imagePath, FILTER_VALIDATE_URL)) {
                 $fullPath = "../" . $imagePath;
 
@@ -39,7 +38,6 @@ if (!empty($_GET['id'])) {
         }
 
         // Delete the property from the database
-        // Related property_images and favourites rows are removed by ON DELETE CASCADE
         $deleteStmt = $pdo->prepare("
             DELETE FROM properties
             WHERE property_id = ?

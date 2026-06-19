@@ -56,9 +56,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         'Agent profile created by administrator.'
                     ]);
                 }
-
-                // If the user was previously a client, their client record can stay.
-                // This keeps their user history and favourites intact.
             }
 
             if ($role === 'client') {
