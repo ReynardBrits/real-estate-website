@@ -40,6 +40,7 @@ require_once "includes/header.php";
                         <img 
                             src="<?= url($property['image_url']); ?>" 
                             alt="<?= e($property['title']); ?>"
+                            loading="lazy"
                         >
 
                         <div class="property-card-content">

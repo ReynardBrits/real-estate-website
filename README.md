@@ -1,7 +1,5 @@
 # Real Estate Website
 
-This is a dynamic real estate web application developed for College assignment.
-
 ## Technologies Used
 
 - HTML

@@ -68,6 +68,7 @@ require_once "../includes/header.php";
                                         <img 
                                             src="<?= url($property['image_url']); ?>" 
                                             alt="<?= e($property['title']); ?>" 
+                                            loading="lazy"
                                             style="width: 90px; height: 60px; object-fit: cover; border-radius: 6px;"
                                         >
                                     <?php else: ?>

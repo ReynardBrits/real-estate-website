@@ -127,6 +127,7 @@ require_once "includes/header.php";
                                     <img 
                                         src="<?= url($property['image_url']); ?>" 
                                         alt="<?= e($property['title']); ?>"
+                                        loading="lazy"
                                     >
                                 <?php endif; ?>
 

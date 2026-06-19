@@ -7,6 +7,6 @@
     </div>
 </footer>
 
-<script src="<?= url('assets/js/script.js'); ?>"></script>
+<script src="<?= url('assets/js/script.js'); ?>" defer></script>
 </body>
 </html>
