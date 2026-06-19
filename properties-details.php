@@ -126,7 +126,8 @@ require_once "includes/header.php";
                     <p><strong>Status:</strong> <?= e($property['status']); ?></p>
 
                     <br>
-
+                    
+                    <h2>Amenities</h2>
                     <p>
                         <strong>Bedrooms:</strong> <?= e($property['bedrooms']); ?> |
                         <strong>Bathrooms:</strong> <?= e($property['bathrooms']); ?> |
@@ -147,6 +148,18 @@ require_once "includes/header.php";
                     <p><?= e($property['description']); ?></p>
 
                     <br>
+
+                    <?php
+                    $mapQuery = urlencode(($property['address'] ?? '') . ' ' . ($property['location'] ?? ''));
+                    ?>
+
+                    <a 
+                        class="btn btn-secondary" 
+                        href="https://www.google.com/maps/search/?api=1&query=<?= $mapQuery; ?>" 
+                        target="_blank"
+                    >
+                        View on Map
+                    </a>
 
                     <a 
                         class="btn btn-secondary" 

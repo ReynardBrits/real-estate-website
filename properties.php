@@ -58,7 +58,17 @@ $sql .= " ORDER BY p.created_at DESC";
 $stmt = $pdo->prepare($sql);
 $stmt->execute($params);
 $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+$suggestionStmt = $pdo->query("
+    SELECT Distinct location
+    FROM properties
+    ORDER BY location ASC
+");
+
+$locationSuggestions = $suggestionStmt->fetchAll(PDO::FETCH_COLUMN);
 ?>
+
+
 
 <section class="section">
     <div class="container">
@@ -69,9 +79,16 @@ $properties = $stmt->fetchAll(PDO::FETCH_ASSOC);
                 <input 
                     type="text" 
                     name="location" 
+                    list="locationSuggestions"
                     placeholder="Location"
                     value="<?= e($_GET['location'] ?? ''); ?>"
                 >
+
+                <datalist id="locationSuggestions">
+                    <?php foreach ($locationSuggestions as $suggestion): ?>
+                        <option value="<?= e($suggestion); ?>">
+                    <?php endforeach; ?>
+                </datalist>
 
                 <select name="property_type">
                     <option value="">Property Type</option>
