@@ -107,7 +107,7 @@ require_once "includes/header.php";
                                 class="gallery-thumb"
                                 src="<?= url($image['image_url']); ?>" 
                                 alt="Property image"
-                                loading="lazy"
+                                loading="eager"
                             >
                         <?php endforeach; ?>
                     </div>
