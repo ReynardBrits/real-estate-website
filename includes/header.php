@@ -9,12 +9,15 @@ require_once __DIR__ . '/functions.php';
     <title>Brits Realty</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="<?= url('assets/css/style.css'); ?>">
+    <link rel="icon" href="<?= url('favicon.ico'); ?>" type="image/x-icon">
+    <link rel="shortcut icon" href="<?= url('favicon.ico'); ?>" type="image/x-icon">
 </head>
 <body>
 
 <header class="site-header">
     <div class="container header-container">
         <a class="site-logo" href="<?= url('index.php'); ?>">
+            <img src="<?= url('favicon.ico'); ?>" alt="Brits Realty Logo" class="nav-image">
             Brits Realty
         </a>
 
