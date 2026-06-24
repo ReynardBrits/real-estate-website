@@ -96,6 +96,7 @@ require_once "includes/header.php";
                         class="details-image" 
                         src="<?= url($mainImage); ?>" 
                         alt="<?= e($property['title']); ?>"
+                        loading="eager"
                     >
                 <?php endif; ?>
 
@@ -106,6 +107,7 @@ require_once "includes/header.php";
                                 class="gallery-thumb"
                                 src="<?= url($image['image_url']); ?>" 
                                 alt="Property image"
+                                loading="lazy"
                             >
                         <?php endforeach; ?>
                     </div>
