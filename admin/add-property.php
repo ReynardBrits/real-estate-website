@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 
 require_once "../includes/db.php";
 require_once "../includes/functions.php";
+require_once "../includes/image-upload.php";
 
 if (!isAgentOrAdmin()) {
     redirect("login.php");
@@ -24,7 +25,7 @@ function uploadPropertyImages($files, $property_id, $pdo) {
     $dbPathPrefix = "assets/images/properties/";
 
     $allowedExtensions = ["jpg", "jpeg", "png", "webp"];
-    $maxFileSize = 5 * 1024 * 1024;
+    $maxFileSize = 8 * 1024 * 1024;
 
     if (!isset($files["name"]) || count($files["name"]) === 0) {
         return;
@@ -52,18 +53,29 @@ function uploadPropertyImages($files, $property_id, $pdo) {
         }
 
         $originalName = $files["name"][$i];
-        $tmpName = $files["tmp_name"][$i];
         $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
         if (!in_array($extension, $allowedExtensions)) {
             continue;
         }
 
-        $newFileName = "property_" . $property_id . "_" . uniqid() . "." . $extension;
-        $targetPath = $uploadDir . $newFileName;
-        $dbPath = $dbPathPrefix . $newFileName;
+        $singleFile = [
+            "name" => $files["name"][$i],
+            "type" => $files["type"][$i],
+            "tmp_name" => $files["tmp_name"][$i],
+            "error" => $files["error"][$i],
+            "size" => $files["size"][$i]
+        ];
 
-        if (move_uploaded_file($tmpName, $targetPath)) {
+        $dbPath = saveCompressedPropertyImage(
+            $singleFile,
+            $uploadDir,
+            $dbPathPrefix,
+            1200,
+            75
+        );
+
+        if ($dbPath !== false) {
             $isPrimary = $displayOrder === 1 ? 1 : 0;
 
             $imageStmt->execute([

@@ -4,6 +4,7 @@ error_reporting(E_ALL);
 
 require_once "../includes/db.php";
 require_once "../includes/functions.php";
+require_once "../includes/image-upload.php";
 
 if (!isAgentOrAdmin()) {
     redirect("login.php");
@@ -44,40 +45,40 @@ function getPropertyImages($pdo, $property_id) {
     return $imageStmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
-function uploadReplacementImages($files, $property_id, $pdo) {
+function uploadEditedPropertyImages($files, $property_id, $pdo) {
     $uploadDir = "../assets/images/properties/";
     $dbPathPrefix = "assets/images/properties/";
 
     $allowedExtensions = ["jpg", "jpeg", "png", "webp"];
-    $maxFileSize = 5 * 1024 * 1024;
+    $maxFileSize = 8 * 1024 * 1024;
 
     if (!isset($files["name"]) || count($files["name"]) === 0) {
-        return false;
+        return;
     }
 
-    $hasUploadedFile = false;
+    // Check if this property already has images
+    $countStmt = $pdo->prepare("
+        SELECT COUNT(*) 
+        FROM property_images 
+        WHERE property_id = ?
+    ");
+    $countStmt->execute([$property_id]);
+    $existingImageCount = (int) $countStmt->fetchColumn();
 
-    for ($i = 0; $i < count($files["name"]); $i++) {
-        if ($files["error"][$i] === UPLOAD_ERR_OK) {
-            $hasUploadedFile = true;
-            break;
-        }
-    }
-
-    if (!$hasUploadedFile) {
-        return false;
-    }
-
-    $deleteImages = $pdo->prepare("DELETE FROM property_images WHERE property_id = ?");
-    $deleteImages->execute([$property_id]);
+    // Get the next display order
+    $orderStmt = $pdo->prepare("
+        SELECT COALESCE(MAX(display_order), 0) 
+        FROM property_images 
+        WHERE property_id = ?
+    ");
+    $orderStmt->execute([$property_id]);
+    $displayOrder = (int) $orderStmt->fetchColumn() + 1;
 
     $imageStmt = $pdo->prepare("
         INSERT INTO property_images
         (property_id, image_url, is_primary, display_order)
         VALUES (?, ?, ?, ?)
     ");
-
-    $displayOrder = 1;
 
     for ($i = 0; $i < count($files["name"]); $i++) {
         if ($files["error"][$i] === UPLOAD_ERR_NO_FILE) {
@@ -93,19 +94,31 @@ function uploadReplacementImages($files, $property_id, $pdo) {
         }
 
         $originalName = $files["name"][$i];
-        $tmpName = $files["tmp_name"][$i];
         $extension = strtolower(pathinfo($originalName, PATHINFO_EXTENSION));
 
         if (!in_array($extension, $allowedExtensions)) {
             continue;
         }
 
-        $newFileName = "property_" . $property_id . "_" . uniqid() . "." . $extension;
-        $targetPath = $uploadDir . $newFileName;
-        $dbPath = $dbPathPrefix . $newFileName;
+        $singleFile = [
+            "name" => $files["name"][$i],
+            "type" => $files["type"][$i],
+            "tmp_name" => $files["tmp_name"][$i],
+            "error" => $files["error"][$i],
+            "size" => $files["size"][$i]
+        ];
 
-        if (move_uploaded_file($tmpName, $targetPath)) {
-            $isPrimary = $displayOrder === 1 ? 1 : 0;
+        $dbPath = saveCompressedPropertyImage(
+            $singleFile,
+            $uploadDir,
+            $dbPathPrefix,
+            1200,
+            75
+        );
+
+        if ($dbPath !== false) {
+            // Only make it primary if the property had no images before
+            $isPrimary = $existingImageCount === 0 ? 1 : 0;
 
             $imageStmt->execute([
                 $property_id,
@@ -114,11 +127,48 @@ function uploadReplacementImages($files, $property_id, $pdo) {
                 $displayOrder
             ]);
 
+            $existingImageCount++;
             $displayOrder++;
         }
     }
+}
 
-    return true;
+function hasNewUploadedImages($files) {
+    if (!isset($files["name"]) || count($files["name"]) === 0) {
+        return false;
+    }
+
+    for ($i = 0; $i < count($files["name"]); $i++) {
+        if ($files["error"][$i] === UPLOAD_ERR_OK) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function deleteExistingPropertyImages($property_id, $pdo) {
+    $stmt = $pdo->prepare("
+        SELECT image_url 
+        FROM property_images 
+        WHERE property_id = ?
+    ");
+    $stmt->execute([$property_id]);
+    $images = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    foreach ($images as $image) {
+        $filePath = __DIR__ . "/../" . $image["image_url"];
+
+        if (is_file($filePath)) {
+            unlink($filePath);
+        }
+    }
+
+    $deleteStmt = $pdo->prepare("
+        DELETE FROM property_images 
+        WHERE property_id = ?
+    ");
+    $deleteStmt->execute([$property_id]);
 }
 
 $images = getPropertyImages($pdo, $property_id);
@@ -165,7 +215,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $property_id
         ]);
 
-        uploadReplacementImages($_FILES["images"], $property_id, $pdo);
+         // Replace images only if new images were uploaded
+        if (isset($_FILES["property_images"]) && hasNewUploadedImages($_FILES["property_images"])) {
+            deleteExistingPropertyImages($property_id, $pdo);
+            uploadEditedPropertyImages($_FILES["property_images"], $property_id, $pdo);
+        }
 
         $pdo->commit();
 
@@ -304,7 +358,7 @@ require_once "../includes/header.php";
                 <div class="form-group">
                     <input 
                         type="file" 
-                        name="images[]" 
+                        name="property_images[]" 
                         accept=".jpg,.jpeg,.png,.webp" 
                         multiple
                     >
