@@ -74,6 +74,7 @@ CREATE TABLE enquiries (
     email VARCHAR(100) NOT NULL,
     phone VARCHAR(20),
     message TEXT NOT NULL,
+    status ENUM('New', 'Contacted', 'Viewing Scheduled', 'Closed', 'Lost') NOT NULL DEFAULT 'New',
     date_submitted TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (client_id) REFERENCES clients(client_id) ON DELETE SET NULL,
     FOREIGN KEY (property_id) REFERENCES properties(property_id) ON DELETE SET NULL

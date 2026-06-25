@@ -11,6 +11,56 @@ if (!isAgentOrAdmin()) {
 
 $user_id = $_SESSION['user_id'];
 
+$message = "";
+$error = "";
+
+$allowedStatuses = [
+    'New',
+    'Contacted',
+    'Viewing Scheduled',
+    'Closed',
+    'Lost'
+];
+
+// Update enquiry status
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['update_status'])) {
+    $enquiryId = (int) ($_POST['enquiry_id'] ?? 0);
+    $status = $_POST['status'] ?? '';
+
+    if ($enquiryId > 0 && in_array($status, $allowedStatuses)) {
+        try {
+            if (isAdmin()) {
+                // Admin can update any enquiry
+                $updateStmt = $pdo->prepare("
+                    UPDATE enquiries
+                    SET status = ?
+                    WHERE enquiry_id = ?
+                ");
+
+                $updateStmt->execute([$status, $enquiryId]);
+            } else {
+                // Agent can only update enquiries linked to assigned properties
+                $updateStmt = $pdo->prepare("
+                    UPDATE enquiries e
+                    JOIN properties p ON e.property_id = p.property_id
+                    JOIN agents a ON p.agent_id = a.agent_id
+                    SET e.status = ?
+                    WHERE e.enquiry_id = ?
+                    AND a.user_id = ?
+                ");
+
+                $updateStmt->execute([$status, $enquiryId, $user_id]);
+            }
+
+            $message = "Enquiry status updated successfully.";
+        } catch (Exception $e) {
+            $error = "Could not update enquiry status.";
+        }
+    } else {
+        $error = "Invalid enquiry status selected.";
+    }
+}
+
 if (isAdmin()) {
     // Admin sees all enquiries
     $stmt = $pdo->query("
@@ -53,6 +103,18 @@ require_once "../includes/header.php";
     <div class="container">
         <h1 class="section-title">Customer Enquiries</h1>
 
+        <?php if ($message): ?>
+            <div class="alert alert-success">
+                <?= e($message); ?>
+            </div>
+        <?php endif; ?>
+
+        <?php if ($error): ?>
+            <div class="alert alert-error">
+                <?= e($error); ?>
+            </div>
+        <?php endif; ?>
+
         <p>
             <a class="btn btn-secondary" href="<?= url('admin/dashboard.php'); ?>">
                 Back to Dashboard
@@ -72,6 +134,7 @@ require_once "../includes/header.php";
                         <th>Email</th>
                         <th>Phone</th>
                         <th>Message</th>
+                        <th>Status</th>
                     </tr>
                 </thead>
 
@@ -96,11 +159,42 @@ require_once "../includes/header.php";
                                 <td><?= e($enquiry['email']); ?></td>
                                 <td><?= e($enquiry['phone']); ?></td>
                                 <td><?= e($enquiry['message']); ?></td>
+
+                                <td>
+                                    <form method="POST">
+                                        <input 
+                                            type="hidden" 
+                                            name="enquiry_id" 
+                                            value="<?= e($enquiry['enquiry_id']); ?>"
+                                        >
+
+                                        <select name="status">
+                                            <?php foreach ($allowedStatuses as $statusOption): ?>
+                                                <option 
+                                                    value="<?= e($statusOption); ?>"
+                                                    <?= ($enquiry['status'] ?? 'New') === $statusOption ? 'selected' : ''; ?>
+                                                >
+                                                    <?= e($statusOption); ?>
+                                                </option>
+                                            <?php endforeach; ?>
+                                        </select>
+
+                                        <br><br>
+
+                                        <button 
+                                            class="btn btn-secondary" 
+                                            type="submit" 
+                                            name="update_status"
+                                        >
+                                            Update
+                                        </button>
+                                    </form>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php else: ?>
                         <tr>
-                            <td colspan="7">No enquiries found.</td>
+                            <td colspan="8">No enquiries found.</td>
                         </tr>
                     <?php endif; ?>
                 </tbody>
