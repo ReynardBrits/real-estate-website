@@ -53,11 +53,7 @@ require_once "includes/header.php";
             <button class="btn" type="submit">Login</button>
         </form>
 
-        <br>
-
-        <p><strong>Demo admin:</strong> admin@britsrealty.co.za / admin123</p>
-        <p><strong>Demo agent:</strong> agent@britsrealty.co.za / agent123</p>
-        <p><strong>Demo client:</strong> client@test.co.za / user123</p>
+        
     </div>
 </div>
 
