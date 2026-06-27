@@ -843,49 +843,13 @@ th {
     }
 }
 
-/* Property Comparison */
-
-.compare-option {
-    display: block;
-    margin-top: 12px;
-    font-weight: 500;
-    color: #111827;
+.clickable-card {
+    cursor: pointer;
 }
 
-.compare-option input {
-    margin-right: 6px;
-}
-
-.compare-table-wrapper {
-    overflow-x: auto;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 800px;
-}
-
-.compare-table th,
-.compare-table td {
-    border: 1px solid #e5e7eb;
-    padding: 14px;
-    text-align: left;
-    vertical-align: top;
-}
-
-.compare-table th {
-    background: #111827;
-    color: #ffffff;
-}
-
-.compare-table td:first-child {
-    font-weight: 700;
-    background: #f9fafb;
+.clickable-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
 }
 
 .listing-tabs {
