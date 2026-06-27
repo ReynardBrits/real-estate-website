@@ -139,21 +139,13 @@ $locationSuggestions = $suggestionStmt->fetchAll(PDO::FETCH_COLUMN);
             <input type="text" id="liveSearch" placeholder="Search visible results...">
         </div>
 
-        <form method="GET" action="<?= url('compare.php'); ?>" id="compareForm">
-
             <?php if (count($properties) > 0): ?>
                 <div class="property-grid">
                     <?php foreach ($properties as $property): ?>
-                        <article class="property-card">
-
-                            <label class="compare-option">
-                                <input 
-                                    type="checkbox" 
-                                    name="ids[]" 
-                                    value="<?= e($property['property_id']); ?>"
-                                >
-                                    Compare
-                                </label>
+                        <article 
+                            class="property-card clickable-card"
+                            data-url="<?= e(url('properties-details.php?id=' . $property['property_id'])); ?>"
+                        >
                             <img 
                                 src="<?= url($property['image_url']); ?>" 
                                 alt="<?= e($property['title']); ?>"
@@ -185,24 +177,11 @@ $locationSuggestions = $suggestionStmt->fetchAll(PDO::FETCH_COLUMN);
                                 </p>
 
                                 <br>
-
-                                <a 
-                                    class="btn btn-secondary" 
-                                    href="<?= url('properties-details.php?id=' . $property['property_id']); ?>"
-                                >
-                                    View Details
-                                </a>
                             </div>
                         </article>
                     <?php endforeach; ?>
                 </div>
-
-                <br>
-                <button class="btn" type="submit">
-                    Compare Selected
-                </button>
-        </form>
-
+                
         <?php else: ?>
             <div class="panel">
                 <p>No properties matched your search. Try changing the filters.</p>
@@ -211,5 +190,17 @@ $locationSuggestions = $suggestionStmt->fetchAll(PDO::FETCH_COLUMN);
 
     </div>
 </section>
+
+<script>
+    document.querySelectorAll('.clickable-card').forEach(function (card) {
+        card.addEventListener('click', function (event) {
+            if (event.target.closest('a, button, input, label, select, textarea')) {
+                return;
+            }
+
+            window.location.href = card.dataset.url;
+        });
+    });
+</script>
 
 <?php require_once "includes/footer.php"; ?>
