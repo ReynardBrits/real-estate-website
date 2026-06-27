@@ -887,3 +887,29 @@ th {
     font-weight: 700;
     background: #f9fafb;
 }
+
+.listing-tabs {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 25px;
+    flex-wrap: wrap;
+}
+
+.listing-tabs a {
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: #f2f2f2;
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.listing-tabs a:hover {
+    background: #e2e2e2;
+}
+
+.listing-tabs a.active {
+    background: #0b1f3a;
+    color: #fff;
+}
