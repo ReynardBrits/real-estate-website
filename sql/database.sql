@@ -319,3 +319,46 @@ VALUES
     '0835551234',
     'I am interested in this property and would like more information.'
 );
+
+-- --------------------------------------------------------
+-- Indexes for properties table
+-- --------------------------------------------------------
+
+CREATE INDEX idx_properties_location ON properties(location);
+CREATE INDEX idx_properties_price ON properties(price);
+CREATE INDEX idx_properties_property_type ON properties(property_type);
+CREATE INDEX idx_properties_listing_type ON properties(listing_type);
+CREATE INDEX idx_properties_status ON properties(status);
+CREATE INDEX idx_properties_bedrooms ON properties(bedrooms);
+CREATE INDEX idx_properties_bathrooms ON properties(bathrooms);
+CREATE INDEX idx_properties_created_at ON properties(created_at);
+
+-- --------------------------------------------------------
+-- Indexes for enquiries table
+-- --------------------------------------------------------
+
+CREATE INDEX idx_enquiries_client_id ON enquiries(client_id);
+CREATE INDEX idx_enquiries_property_id ON enquiries(property_id);
+CREATE INDEX idx_enquiries_date_submitted ON enquiries(date_submitted);
+
+-- --------------------------------------------------------
+-- Indexes for property_images table
+-- --------------------------------------------------------
+
+CREATE INDEX idx_property_images_property_id ON property_images(property_id);
+CREATE INDEX idx_property_images_is_primary ON property_images(is_primary);
+CREATE INDEX idx_property_images_display_order ON property_images(display_order);
+
+-- --------------------------------------------------------
+-- Indexes for favourites table
+-- --------------------------------------------------------
+
+CREATE INDEX idx_favourites_property_id ON favourites(property_id);
+
+-- --------------------------------------------------------
+-- Indexes for clients and agents tables
+-- --------------------------------------------------------
+
+CREATE INDEX idx_clients_user_id ON clients(user_id);
+CREATE INDEX idx_agents_user_id ON agents(user_id);
+

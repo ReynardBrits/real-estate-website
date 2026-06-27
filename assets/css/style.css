@@ -843,51 +843,6 @@ th {
     }
 }
 
-/* Property Comparison */
-
-.compare-option {
-    display: block;
-    margin-top: 12px;
-    font-weight: 500;
-    color: #111827;
-}
-
-.compare-option input {
-    margin-right: 6px;
-}
-
-.compare-table-wrapper {
-    overflow-x: auto;
-    background: #ffffff;
-    border-radius: 12px;
-    padding: 20px;
-    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
-}
-
-.compare-table {
-    width: 100%;
-    border-collapse: collapse;
-    min-width: 800px;
-}
-
-.compare-table th,
-.compare-table td {
-    border: 1px solid #e5e7eb;
-    padding: 14px;
-    text-align: left;
-    vertical-align: top;
-}
-
-.compare-table th {
-    background: #111827;
-    color: #ffffff;
-}
-
-.compare-table td:first-child {
-    font-weight: 700;
-    background: #f9fafb;
-}
-
 .clickable-card {
     cursor: pointer;
 }
@@ -895,4 +850,30 @@ th {
 .clickable-card:hover {
     transform: translateY(-3px);
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.listing-tabs {
+    display: flex;
+    gap: 12px;
+    margin: 20px 0 25px;
+    flex-wrap: wrap;
+}
+
+.listing-tabs a {
+    padding: 10px 22px;
+    border-radius: 999px;
+    background: #f2f2f2;
+    color: #333;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.listing-tabs a:hover {
+    background: #e2e2e2;
+}
+
+.listing-tabs a.active {
+    background: #0b1f3a;
+    color: #fff;
 }
