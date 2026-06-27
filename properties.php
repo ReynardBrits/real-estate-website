@@ -74,6 +74,33 @@ $locationSuggestions = $suggestionStmt->fetchAll(PDO::FETCH_COLUMN);
     <div class="container">
         <h1 class="section-title">Available Properties</h1>
 
+        <?php
+            $currentListingType = $_GET['listing_type'] ?? '';
+        ?>
+
+        <div class="listing-tabs">
+            <a 
+                href="<?= url('properties.php'); ?>" 
+                class="<?= $currentListingType === '' ? 'active' : ''; ?>"
+            >
+                All
+            </a>
+
+            <a 
+                href="<?= url('properties.php?listing_type=For%20Sale'); ?>" 
+                class="<?= $currentListingType === 'For Sale' ? 'active' : ''; ?>"
+            >
+                Buy
+            </a>
+
+            <a 
+                href="<?= url('properties.php?listing_type=For%20Rent'); ?>" 
+                class="<?= $currentListingType === 'For Rent' ? 'active' : ''; ?>"
+            >
+                Rent
+            </a>
+        </div>
+        
         <div class="panel">
             <form class="search-form" method="GET">
                 <input 
